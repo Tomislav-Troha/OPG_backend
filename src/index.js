@@ -1,10 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import mysql from "mysql";
 import { createRouter } from "../src/events.js";
 
-const db = mysql;
-const connection = db.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
