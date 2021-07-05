@@ -53,12 +53,12 @@ export function createRouter(db) {
     );
   });
 
-  router.post("/kosarica", [auth.verify], (req, res) => {
+  router.post("/kosarica/:email", [auth.verify], (req, res) => {
     let data = req.body;
-    //console.log(data);
+    console.log("sss", data);
     db.query(
-      "INSERT INTO kosarica (proizvod, cijena, kolicina) VALUES (?, ?, ?)",
-      [data.proizvod, data.cijena, data.kolicina],
+      "INSERT INTO kosarica (proizvod, cijena, kolicina, email) VALUES (?, ?, ?, ?)",
+      [data.proizvod, data.cijena, data.kolicina, data.email],
       (error, result) => {
         if (error) {
           console.log(error);
@@ -70,9 +70,13 @@ export function createRouter(db) {
     );
   });
 
-  router.get("/kosarica", [auth.verify], (req, res) => {
+  router.get("/kosarica/:email", [auth.verify], (req, res) => {
+    let email = req.params.email;
+    // console.log(email);
     db.query(
-      "SELECT id, proizvod, cijena, kolicina from kosarica ",
+      "SELECT id, proizvod, cijena, kolicina from kosarica WHERE email = ? ORDER BY email ",
+      [email],
+
       (error, result) => {
         if (error) {
           console.log(error);
@@ -84,9 +88,12 @@ export function createRouter(db) {
     );
   });
 
-  router.get("/kosarica/proizvod", (req, res) => {
+  router.get("/kosarica/proizvod/:email", (req, res) => {
+    let email = req.params.email;
+    // console.log(email);
     db.query(
-      "SELECT id, proizvod, cijena, kolicina from kosarica ",
+      "SELECT id, proizvod, cijena, kolicina from kosarica WHERE email = ? ORDER BY email",
+      [email],
       (error, result) => {
         if (error) {
           console.log(error);
